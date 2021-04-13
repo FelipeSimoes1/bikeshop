@@ -2,6 +2,7 @@ package com.maisprati.bikeshop.service;
 
 import com.maisprati.bikeshop.domain.Bike;
 import com.maisprati.bikeshop.domain.BikeRepository;
+import com.maisprati.bikeshop.api.request.PricePatchRequest;
 import com.maisprati.bikeshop.exception.BadRequestException;
 import org.springframework.stereotype.Service;
 
@@ -52,9 +53,18 @@ public class BikeService {
         bikeRepository.deleteById(id);
     }
 
+    public Bike priceUpdate(Long id, PricePatchRequest newPrice) {
+        Bike bikeToPatch = verifyIfExists("update price",id);
+
+        bikeToPatch.setPrice(newPrice.getPrice());
+
+        return bikeRepository.save(bikeToPatch);
+    }
+
     public Bike verifyIfExists(String action, Long id) throws BadRequestException {
         return bikeRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException(action, id));
     }
+
 
 }

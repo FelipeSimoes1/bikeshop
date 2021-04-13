@@ -1,6 +1,5 @@
 package com.maisprati.bikeshop.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.maisprati.bikeshop.enuns.BikeModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -10,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDate;

@@ -85,5 +85,17 @@ class BikeServiceTest {
                 .doesNotThrowAnyException();
     }
 
+    @Test
+    void update_UpdatesBike_WhenSuccessful(){
+        Assertions.assertThatCode(() ->bikeService.update(1L, BikeCreator.createValidUpdatedBike()))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    void update_UpdateBikePrice_WhenSuccessful(){
+        Assertions.assertThatCode(()->bikeService.priceUpdate(1L, BikeCreator.updatePrice()))
+                .doesNotThrowAnyException();
+    }
+
 }
 

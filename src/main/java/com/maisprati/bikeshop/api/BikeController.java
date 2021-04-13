@@ -1,6 +1,7 @@
 package com.maisprati.bikeshop.api;
 
 import com.maisprati.bikeshop.domain.Bike;
+import com.maisprati.bikeshop.api.request.PricePatchRequest;
 import com.maisprati.bikeshop.exception.BadRequestException;
 import com.maisprati.bikeshop.service.BikeService;
 import io.swagger.annotations.ApiOperation;
@@ -35,7 +36,7 @@ public class BikeController {
     }
 
     @ApiOperation("Cria uma nova bike.")
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<Bike> save(@RequestBody @Valid Bike bikeToSave) throws BadRequestException {
         return ResponseEntity.status(HttpStatus.CREATED)
         .body(bikeService.save(bikeToSave));
@@ -52,6 +53,12 @@ public class BikeController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id){
         bikeService.delete(id);
+    }
+
+    @ApiOperation("Altera o preço de uma bike pelo ID.")
+    @PatchMapping("/{id}")
+    public ResponseEntity<Bike> updatePrice(@PathVariable Long id, @RequestBody PricePatchRequest newPrice) {
+        return ResponseEntity.ok(bikeService.priceUpdate(id, newPrice));
     }
 
 }

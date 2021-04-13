@@ -1,5 +1,6 @@
 package com.maisprati.bikeshop.util;
 
+import com.maisprati.bikeshop.api.request.PricePatchRequest;
 import com.maisprati.bikeshop.domain.Bike;
 import com.maisprati.bikeshop.enuns.BikeModel;
 
@@ -30,6 +31,25 @@ public class BikeCreator {
                 .purchaseDate(LocalDate.now())
                 .client("Adriana")
                 .store("BikeTools")
+                .build();
+    }
+
+    public static Bike createValidUpdatedBike(){
+        return Bike.builder()
+                .name("Sense Criterium")
+                .bikeModel(BikeModel.ROAD)
+                .price(BigDecimal.valueOf((2500)))
+                .description("21 marchas, aro 700")
+                .purchaseDate(LocalDate.now())
+                .client("Paulo Cesar")
+                .store("BikePark")
+                .id(1L)
+                .build();
+    }
+
+    public static PricePatchRequest updatePrice(){
+        return PricePatchRequest.builder()
+                .price(BigDecimal.valueOf(2600))
                 .build();
     }
 }

@@ -1,6 +1,7 @@
 package com.maisprati.bikeshop.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.maisprati.bikeshop.api.request.PricePatchRequest;
 import com.maisprati.bikeshop.domain.Bike;
 import com.maisprati.bikeshop.domain.BikeRepository;
 import com.maisprati.bikeshop.exception.BadRequestException;
@@ -25,8 +26,7 @@ import java.util.Optional;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
@@ -52,6 +52,7 @@ class BikeControllerTest {
         Bike bikeTester = new Bike();
         bikeTester.setId(1L);
         bikeTester.setName("Sense Fun");
+        bikeTester.setPrice(BigDecimal.valueOf(2800));
         bikeTester.setDescription("24 marchas, aro 29");
         bikeTester.setPurchaseDate(LocalDate.now());
         bikes.add(bikeTester);
@@ -170,10 +171,30 @@ class BikeControllerTest {
         bikeUpdated.setPrice(BigDecimal.valueOf(3000));
 
         when(bikeService.findById(12L)).thenReturn(Optional.of(newBike));
-        when(bikeService.save(any(Bike.class))).thenReturn(newBike);
+        when(bikeService.save(any(Bike.class))).thenReturn(bikeUpdated);
 
         mockMvc.perform(put("/bikes/12")
-                .content(objectMapper.writeValueAsString(bikeUpdated))
+                .content(objectMapper.writeValueAsString(newBike))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void updatePrice_ReturnsSuccess_WhenUpdatedValidBike() throws Exception {
+
+        Bike newBike = new Bike();
+        newBike.setId(12L);
+        newBike.setName("Tsw Jumper");
+        newBike.setPrice(BigDecimal.valueOf(1299));
+        newBike.setPurchaseDate(LocalDate.now());
+
+        PricePatchRequest newPrice = PricePatchRequest.builder().price(BigDecimal.valueOf(3800)).build();
+
+        when(bikeService.findById(12L)).thenReturn(Optional.of(newBike));
+        when(bikeService.priceUpdate(12L, newPrice)).thenReturn(newBike);
+
+        mockMvc.perform(patch("/bikes/12")
+                .content(objectMapper.writeValueAsString(newPrice))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }

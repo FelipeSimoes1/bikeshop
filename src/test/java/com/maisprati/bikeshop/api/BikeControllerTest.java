@@ -91,8 +91,7 @@ class BikeControllerTest {
     @Test
     void findAll_ReturnsListBikes_WhenSuccessful() throws Exception {
         when(bikeService.findAll()).thenReturn(bikes);
-        mockMvc.perform(MockMvcRequestBuilders.get("/bikes")
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(MockMvcRequestBuilders.get("/bikes"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(2)))
@@ -103,9 +102,11 @@ class BikeControllerTest {
     @Test
     void findAll_ReturnsEmptyListBikes_WhenSuccessfull() throws Exception {
         when(bikeService.findAll()).thenReturn(bikes);
-        mockMvc.perform(MockMvcRequestBuilders.get("/bikes")
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk());
+        bikes.clear();
+        mockMvc.perform(MockMvcRequestBuilders.get("/bikes"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(0)));
     }
 
     @Test
@@ -140,9 +141,11 @@ class BikeControllerTest {
 
         when(bikeService.findById(12L)).thenReturn(Optional.of(newBike));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/bikes/" + newBike.getId())
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.get("/bikes/" + newBike.getId()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id",is(12)))
+                .andExpect(jsonPath("$.name",is("Tsw Jumper")));
     }
 
     @Test
@@ -169,7 +172,7 @@ class BikeControllerTest {
         when(bikeService.findById(12L)).thenReturn(Optional.of(newBike));
         when(bikeService.save(any(Bike.class))).thenReturn(newBike);
 
-        mockMvc.perform(put("/bikes/1")
+        mockMvc.perform(put("/bikes/12")
                 .content(objectMapper.writeValueAsString(bikeUpdated))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());

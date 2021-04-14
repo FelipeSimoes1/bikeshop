@@ -11,3 +11,7 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: true
+
+java:
+  runtime:
+    version: correto11

@@ -1,6 +1,6 @@
 # Sistema Back-End para Cadastro de Bicicletas
 
-## Resolução do desafio final da trilha +PraTi realizada em conjunto com a ilegra
+### Resolução do desafio final da trilha +PraTi realizada em conjunto com a ilegra
 
 Sua execução promove as seguintes funcionalidades:
 
